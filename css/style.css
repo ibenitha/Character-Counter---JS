@@ -322,7 +322,7 @@ textarea {
   background-color: transparent;
   color: var(--text-primary);
   line-height: 1.6;
-  resize: vertical;
+  resize: none;
   font-size: 1rem;      /* Text Preset 4 — 16px */
   letter-spacing: -0.05em;
 }
