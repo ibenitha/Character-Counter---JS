@@ -110,20 +110,20 @@
           <div class="stats">
             <div class="card stat-card stat-card--characters purple">
               <div class="pattern"></div>
-              <p class="stat-card__value number">508</p>
+              <p class="stat-card__value number">00</p>
               <p class="stat-card__label label">Total Characters</p>
             </div>
 
             <div class="card stat-card stat-card--words orange">
               <div class="pattern"></div>
-              <p class="stat-card__value number">86</p>
+              <p class="stat-card__value number">00</p>
               <p class="stat-card__label label">Word Count</p>
             </div>
 
             <div class="card stat-card stat-card--lines coral">
               <div class="pattern"></div>
-              <p class="stat-card__value number">06</p>
-              <p class="stat-card__label label">Line Count</p>
+              <p class="stat-card__value number">00</p>
+              <p class="stat-card__label label">Sentence Count</p>
             </div>
           </div>
 
@@ -132,31 +132,16 @@
               Letter Density
             </h2>
 
-            <ul class="letter-density__list">
-              <li class="density-item">
-                <span class="density-item__letter">E</span>
-                <div class="density-item__bar" role="presentation">
-                  <div class="density-item__fill density-item__fill--e"></div>
-                </div>
-                <span class="density-item__stats">59 (13.85%)</span>
-              </li>
+            <ul class="letter-density__list" id="density-list" aria-live="polite" aria-label="Letter frequency breakdown"></ul>
 
-              <li class="density-item">
-                <span class="density-item__letter">I</span>
-                <div class="density-item__bar" role="presentation">
-                  <div class="density-item__fill density-item__fill--i"></div>
-                </div>
-                <span class="density-item__stats">41 (9.63%)</span>
-              </li>
-
-              <li class="density-item">
-                <span class="density-item__letter">T</span>
-                <div class="density-item__bar" role="presentation">
-                  <div class="density-item__fill density-item__fill--t"></div>
-                </div>
-                <span class="density-item__stats">38 (8.92%)</span>
-              </li>
-            </ul>
+            <button
+              class="density-toggle"
+              id="density-toggle"
+              aria-expanded="false"
+              hidden
+            >
+              Show more
+            </button>
           </section>
         </section>
       </main>
@@ -172,9 +157,10 @@
       const characterLimitInput = document.getElementById('character-limit');
       const totalCharactersValue = document.querySelector('.stat-card--characters .stat-card__value');
       const wordCountValue = document.querySelector('.stat-card--words .stat-card__value');
-      const lineCountValue = document.querySelector('.stat-card--lines .stat-card__value');
+      const sentenceCountValue = document.querySelector('.stat-card--lines .stat-card__value');
       const readingTimeValue = document.querySelector('.reading-time span');
-      const densityList = document.querySelector('.letter-density__list');
+      const densityList = document.getElementById('density-list');
+      const densityToggle = document.getElementById('density-toggle');
       const charLimitWarning = document.getElementById('char-limit-warning');
       const charCard = document.querySelector('.stat-card--characters');
 
@@ -200,6 +186,41 @@
         charLimitWarning.hidden = !overLimit;
       }
 
+      // ── Density "Show more / Show less" toggle ─────────────────────────────
+      const DENSITY_INITIAL = 5;
+      let densityExpanded = false;
+      /** @type {Array<{letter: string, count: number, percentage: string}>} */
+      let lastDensity = [];
+
+      function renderDensityList() {
+        const visible = densityExpanded ? lastDensity : lastDensity.slice(0, DENSITY_INITIAL);
+
+        densityList.innerHTML = visible
+          .map((item) => `
+            <li class="density-item">
+              <span class="density-item__letter">${item.letter}</span>
+              <div class="density-item__bar" role="presentation">
+                <div class="density-item__fill" style="width: ${Math.min(item.percentage, 100)}%"></div>
+              </div>
+              <span class="density-item__stats">${item.count} (${item.percentage}%)</span>
+            </li>
+          `)
+          .join('');
+
+        // Only show toggle button if there are more rows than the initial limit
+        const hasMore = lastDensity.length > DENSITY_INITIAL;
+        densityToggle.hidden = !hasMore;
+        if (hasMore) {
+          densityToggle.textContent = densityExpanded ? 'Show less' : 'Show more';
+          densityToggle.setAttribute('aria-expanded', String(densityExpanded));
+        }
+      }
+
+      densityToggle.addEventListener('click', () => {
+        densityExpanded = !densityExpanded;
+        renderDensityList();
+      });
+
       // ── Main render ────────────────────────────────────────────────────────
       function renderAnalysis() {
         const result = analyzeText(textarea.value, {
@@ -209,7 +230,7 @@
         // Update stat cards
         totalCharactersValue.textContent = String(result.totalCharacters).padStart(2, '0');
         wordCountValue.textContent       = String(result.wordCount).padStart(2, '0');
-        lineCountValue.textContent       = String(result.lineCount).padStart(2, '0');
+        sentenceCountValue.textContent   = String(result.sentenceCount).padStart(2, '0');
 
         // Reading time + optional limit badge
         const limitEnabled    = setLimit.checked;
@@ -227,20 +248,9 @@
         // Limit warning feedback
         setOverLimitState(overLimit);
 
-        // Letter density list — show up to 10 rows, sorted by frequency
-        const TOP_N = 10;
-        densityList.innerHTML = result.density
-          .slice(0, TOP_N)
-          .map((item) => `
-            <li class="density-item">
-              <span class="density-item__letter">${item.letter}</span>
-              <div class="density-item__bar" role="presentation">
-                <div class="density-item__fill" style="width: ${Math.min(item.percentage, 100)}%"></div>
-              </div>
-              <span class="density-item__stats">${item.count} (${item.percentage}%)</span>
-            </li>
-          `)
-          .join('');
+        // Letter density — store then render
+        lastDensity = result.density;
+        renderDensityList();
       }
 
       // ── Event listeners ────────────────────────────────────────────────────

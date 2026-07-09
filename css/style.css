@@ -606,6 +606,32 @@ textarea {
   text-align: right;
 }
 
+/* "Show more / Show less" density toggle */
+.density-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.875rem;
+  padding: 0.3125rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.density-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--color-purple-500);
+}
+
+.density-toggle:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 /* =============================================
    Responsive — Mobile first
    ============================================= */
