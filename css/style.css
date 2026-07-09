@@ -461,9 +461,10 @@ textarea {
    ============================================= */
 
 .stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-200);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
   margin-bottom: var(--spacing-400);
 }
 
@@ -473,7 +474,8 @@ textarea {
   overflow: hidden;
   border-radius: var(--radius-16);
   padding: var(--spacing-300);   /* 24px all sides */
-  height: 140px;
+  height: 150px;                 /* exact Figma spec */
+  flex: 1;                       /* equal width, fills the row */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -709,12 +711,12 @@ textarea {
   }
 
   .stats {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: var(--spacing-150);
   }
 
   .stat-card {
-    height: 120px;
+    height: 130px;
   }
 
   .number {
@@ -737,8 +739,7 @@ textarea {
   }
 
   .stats {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-150);
+    gap: var(--spacing-200);
   }
 
   .number {
