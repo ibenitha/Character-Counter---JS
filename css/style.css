@@ -524,9 +524,7 @@ textarea {
 }
 
 .coral .pattern {
-  background: radial-gradient(ellipse 18px 8px at center, rgba(255, 255, 255, 0.22) 60%, transparent 65%);
-  background-size: 38px 38px;
-  transform: translate(30px, -5px);
+  mask-image: none;
 }
 
 /* =============================================
