@@ -519,20 +519,22 @@ textarea {
 }
 
 /* ── Pattern overlay ──
-   The pattern covers the right ~55% of the card, full height, edge to edge.
-   background-image on the .pattern div scales without overflow clipping issues.
+   Fills the right ~45% of the card, flush top/right/bottom.
+   A gradient mask fades the left edge into the card background color.
    ── */
 .pattern {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  left: 45%;           /* occupies the right ~55% of the card */
+  width: 55%;
   z-index: 1;
   pointer-events: none;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 25%);
+  mask-image: linear-gradient(to right, transparent 0%, black 25%);
 }
 
 .stat-card--characters .pattern {
@@ -541,13 +543,16 @@ textarea {
 
 .stat-card--words .pattern {
   background-image: url('../assets/images/pattern-words.svg');
+  /* Words pattern has hard left edge per design — no fade */
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
 .stat-card--lines .pattern {
   background-image: url('../assets/images/pattern-lines.svg');
 }
 
-/* Remove the <img> approach — pattern is now pure CSS background */
+/* Hide the <img> tags inside .pattern — CSS background handles rendering */
 .pattern__img {
   display: none;
 }
