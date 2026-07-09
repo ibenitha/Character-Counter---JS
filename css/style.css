@@ -521,6 +521,38 @@ textarea {
 }
 
 /* =============================================
+   Character Limit Warning
+   ============================================= */
+
+/* Red warning message below the textarea */
+.char-limit-warning {
+  font-size: 0.78125rem;
+  font-weight: 600;
+  color: #ff4d4d;
+  margin-top: 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.char-limit-warning::before {
+  content: "⚠";
+  font-size: 0.875rem;
+}
+
+/* Textarea border turns red when over limit */
+.textarea-wrapper--over-limit {
+  border-color: #ff4d4d !important;
+  box-shadow: 0 0 0 2px rgba(255, 77, 77, 0.2) !important;
+}
+
+/* Character stat card turns red when over limit */
+.stat-card--over-limit.stat-card--characters {
+  background-color: #ff4d4d;
+  transition: background-color 0.25s ease;
+}
+
+/* =============================================
    Letter Density
    ============================================= */
 

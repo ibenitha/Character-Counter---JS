@@ -61,8 +61,12 @@
               class="textarea"
               rows="9"
               placeholder="Start typing here..."
-              aria-describedby="reading-time"
+              aria-describedby="reading-time char-limit-warning"
             >Design is the silent ambassador of your brand. Simplicity is key to effective communication, creating clarity in every interaction. A great design transforms complex ideas into elegant solutions, making them easy to understand. It blends aesthetics and functionality seamlessly.</textarea>
+            <!-- Warning shown when character limit is exceeded -->
+            <p class="char-limit-warning" id="char-limit-warning" role="alert" aria-live="polite" hidden>
+              Character limit exceeded
+            </p>
           </div>
 
           <div class="controls">
@@ -162,6 +166,7 @@
       const themeSwitch = document.getElementById('theme-switch');
       const root = document.documentElement;
       const textarea = document.querySelector('.textarea');
+      const textareaWrapper = document.querySelector('.textarea-wrapper');
       const excludeSpaces = document.getElementById('exclude-spaces');
       const setLimit = document.getElementById('set-limit');
       const characterLimitInput = document.getElementById('character-limit');
@@ -170,7 +175,10 @@
       const lineCountValue = document.querySelector('.stat-card--lines .stat-card__value');
       const readingTimeValue = document.querySelector('.reading-time span');
       const densityList = document.querySelector('.letter-density__list');
+      const charLimitWarning = document.getElementById('char-limit-warning');
+      const charCard = document.querySelector('.stat-card--characters');
 
+      // ── Theme ──────────────────────────────────────────────────────────────
       function updateTheme() {
         if (themeSwitch.checked) {
           root.classList.add('theme-light');
@@ -179,26 +187,50 @@
         }
       }
 
+      // ── Limit helpers ──────────────────────────────────────────────────────
+
+      /**
+       * Apply or remove the over-limit visual state.
+       * @param {boolean} overLimit
+       */
+      function setOverLimitState(overLimit) {
+        textarea.classList.toggle('textarea--over-limit', overLimit);
+        textareaWrapper.classList.toggle('textarea-wrapper--over-limit', overLimit);
+        charCard.classList.toggle('stat-card--over-limit', overLimit);
+        charLimitWarning.hidden = !overLimit;
+      }
+
+      // ── Main render ────────────────────────────────────────────────────────
       function renderAnalysis() {
         const result = analyzeText(textarea.value, {
           excludeSpaces: excludeSpaces.checked,
         });
 
-        totalCharactersValue.textContent = String(result.totalCharacters).padStart(3, '0');
-        wordCountValue.textContent = String(result.wordCount).padStart(2, '0');
-        lineCountValue.textContent = String(result.lineCount).padStart(2, '0');
-        readingTimeValue.textContent = result.readingTime;
+        // Update stat cards
+        totalCharactersValue.textContent = String(result.totalCharacters).padStart(2, '0');
+        wordCountValue.textContent       = String(result.wordCount).padStart(2, '0');
+        lineCountValue.textContent       = String(result.lineCount).padStart(2, '0');
 
-        const limitEnabled = setLimit.checked;
-        const characterLimit = Number(characterLimitInput.value);
-        if (limitEnabled && Number.isFinite(characterLimit) && characterLimit > 0) {
-          const overLimit = result.totalCharacters > characterLimit;
-          readingTimeValue.textContent = overLimit
-            ? `${result.readingTime} • over limit`
-            : `${result.readingTime} • within limit`;
+        // Reading time + optional limit badge
+        const limitEnabled    = setLimit.checked;
+        const characterLimit  = Number(characterLimitInput.value);
+        const limitIsValid    = limitEnabled && Number.isFinite(characterLimit) && characterLimit > 0;
+        const overLimit       = limitIsValid && result.totalCharacters > characterLimit;
+
+        if (limitIsValid) {
+          const badge = overLimit ? '⚠ over limit' : '✓ within limit';
+          readingTimeValue.textContent = `${result.readingTime} · ${badge}`;
+        } else {
+          readingTimeValue.textContent = result.readingTime;
         }
 
+        // Limit warning feedback
+        setOverLimitState(overLimit);
+
+        // Letter density list — show up to 10 rows, sorted by frequency
+        const TOP_N = 10;
         densityList.innerHTML = result.density
+          .slice(0, TOP_N)
           .map((item) => `
             <li class="density-item">
               <span class="density-item__letter">${item.letter}</span>
@@ -211,12 +243,15 @@
           .join('');
       }
 
-      [themeSwitch, textarea, excludeSpaces, setLimit, characterLimitInput].forEach((element) => {
-        element.addEventListener('input', renderAnalysis);
-        element.addEventListener('change', renderAnalysis);
+      // ── Event listeners ────────────────────────────────────────────────────
+      [textarea, excludeSpaces, setLimit, characterLimitInput].forEach((el) => {
+        el.addEventListener('input', renderAnalysis);
+        el.addEventListener('change', renderAnalysis);
       });
 
       themeSwitch.addEventListener('change', updateTheme);
+
+      // ── Init ───────────────────────────────────────────────────────────────
       updateTheme();
       renderAnalysis();
     </script>
