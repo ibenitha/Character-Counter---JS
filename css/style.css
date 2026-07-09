@@ -472,11 +472,11 @@ textarea {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-16);
-  padding: var(--spacing-300);   /* 24px */
-  min-height: 120px;
+  padding: var(--spacing-300);
+  height: 110px;       /* fixed height so pattern scales predictably */
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;    /* number + label sit at bottom */
+  justify-content: flex-end;
   isolation: isolate;
 }
 
@@ -519,22 +519,21 @@ textarea {
 }
 
 /* ── Pattern overlay ──
-   Fills the right ~45% of the card, flush top/right/bottom.
-   A gradient mask fades the left edge into the card background color.
+   Sits on the right ~45% of the card, full height.
+   background-size: auto 100% makes the SVG scale to card height
+   while preserving its aspect ratio — no stretching.
    ── */
 .pattern {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 55%;
+  left: 52%;
   z-index: 1;
   pointer-events: none;
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 25%);
-  mask-image: linear-gradient(to right, transparent 0%, black 25%);
+  background-size: auto 100%;
+  background-position: left center;
 }
 
 .stat-card--characters .pattern {
@@ -543,16 +542,13 @@ textarea {
 
 .stat-card--words .pattern {
   background-image: url('../assets/images/pattern-words.svg');
-  /* Words pattern has hard left edge per design — no fade */
-  -webkit-mask-image: none;
-  mask-image: none;
 }
 
 .stat-card--lines .pattern {
   background-image: url('../assets/images/pattern-lines.svg');
 }
 
-/* Hide the <img> tags inside .pattern — CSS background handles rendering */
+/* Remove the <img> approach — pattern is now pure CSS background */
 .pattern__img {
   display: none;
 }
@@ -718,7 +714,7 @@ textarea {
   }
 
   .stat-card {
-    min-height: 100px;
+    height: 100px;
   }
 
   .number {
