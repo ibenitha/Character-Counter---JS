@@ -471,11 +471,11 @@ textarea {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-16);
-  padding: var(--spacing-300);   /* 24px — spacing-300 */
+  padding: var(--spacing-300);   /* 24px */
   min-height: 120px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;    /* number above, label below — flush to bottom */
+  justify-content: flex-end;    /* number + label sit at bottom */
   isolation: isolate;
 }
 
@@ -501,7 +501,7 @@ textarea {
   color: var(--text-on-card);
 }
 
-/* ── Card colors ── */
+/* ── Card colors — matched to Figma reference ── */
 .card.purple,
 .stat-card--characters {
   background-color: var(--color-purple-400);   /* #D3A0FA */
@@ -514,27 +514,40 @@ textarea {
 
 .card.coral,
 .stat-card--lines {
-  background-color: var(--color-orange-800);   /* #DA3701 */
+  background-color: var(--color-orange-500);   /* #FE8159 — darker base, lighter #FA9A82 pattern on top */
 }
 
-/* ── Pattern overlay ── */
+/* ── Pattern overlay ──
+   The pattern covers the right half of the card, full height, edge to edge.
+   We use background-image on the .pattern div so it scales without clipping.
+   ── */
 .pattern {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 1;
+  /* Right half only */
+  left: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
+.stat-card--characters .pattern {
+  background-image: url('../images/pattern-characters.svg');
+}
+
+.stat-card--words .pattern {
+  background-image: url('../images/pattern-words.svg');
+}
+
+.stat-card--lines .pattern {
+  background-image: url('../images/pattern-lines.svg');
+}
+
+/* Remove the <img> approach — pattern is now pure CSS background */
 .pattern__img {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 120px;
-  height: 120px;
-  pointer-events: none;
-  display: block;
-  opacity: 0.5;
+  display: none;
 }
 
 /* =============================================
