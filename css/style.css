@@ -472,8 +472,8 @@ textarea {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-16);
-  padding: var(--spacing-300);
-  height: 110px;       /* fixed height so pattern scales predictably */
+  padding: var(--spacing-300);   /* 24px all sides */
+  height: 140px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -519,21 +519,21 @@ textarea {
 }
 
 /* ── Pattern overlay ──
-   Sits on the right ~45% of the card, full height.
-   background-size: auto 100% makes the SVG scale to card height
-   while preserving its aspect ratio — no stretching.
+   The pattern div sits on the right ~45% of the card, full height.
+   background-size: cover fills this area with the SVG, cropping it naturally
+   — exactly like the reference where you see a clipped portion of the pattern.
    ── */
 .pattern {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  left: 52%;
+  left: 55%;
   z-index: 1;
   pointer-events: none;
   background-repeat: no-repeat;
-  background-size: auto 100%;
-  background-position: left center;
+  background-size: cover;
+  background-position: center center;
 }
 
 .stat-card--characters .pattern {
@@ -714,7 +714,7 @@ textarea {
   }
 
   .stat-card {
-    height: 100px;
+    height: 120px;
   }
 
   .number {
