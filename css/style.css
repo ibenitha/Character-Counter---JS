@@ -592,11 +592,16 @@ textarea {
   height: 100%;
   border-radius: 999px;
   background: #c27cf8; /* unified fill color */
+  transition: width 0.3s ease;
 }
 
-.density-item__fill--e { width: 21%; }
-.density-item__fill--i { width: 9%; }
-.density-item__fill--t { width: 8%; }
+/* Empty-state message when no letters are present */
+.density-empty {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  list-style: none;
+}
 
 .density-item__stats {
   font-size: 0.8125rem;

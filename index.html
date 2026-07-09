@@ -193,6 +193,13 @@
       let lastDensity = [];
 
       function renderDensityList() {
+        // Show an empty-state message when there are no letters to analyse
+        if (lastDensity.length === 0) {
+          densityList.innerHTML = '<li class="density-empty">No characters found. Start typing above.</li>';
+          densityToggle.hidden = true;
+          return;
+        }
+
         const visible = densityExpanded ? lastDensity : lastDensity.slice(0, DENSITY_INITIAL);
 
         densityList.innerHTML = visible
