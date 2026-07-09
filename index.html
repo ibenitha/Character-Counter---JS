@@ -65,7 +65,7 @@
             >Design is the silent ambassador of your brand. Simplicity is key to effective communication, creating clarity in every interaction. A great design transforms complex ideas into elegant solutions, making them easy to understand. It blends aesthetics and functionality seamlessly.</textarea>
             <!-- Warning shown when character limit is exceeded -->
             <p class="char-limit-warning" id="char-limit-warning" role="alert" aria-live="polite" hidden>
-              Character limit exceeded
+              Limit reached! Your text exceeds <span id="char-limit-value">300</span> characters.
             </p>
           </div>
 
@@ -146,7 +146,7 @@
               aria-expanded="false"
               hidden
             >
-              Show more
+              See more
             </button>
           </section>
         </section>
@@ -168,6 +168,7 @@
       const densityList = document.getElementById('density-list');
       const densityToggle = document.getElementById('density-toggle');
       const charLimitWarning = document.getElementById('char-limit-warning');
+      const charLimitValueSpan = document.getElementById('char-limit-value');
       const charCard = document.querySelector('.stat-card--characters');
 
       // ── Theme ──────────────────────────────────────────────────────────────
@@ -224,7 +225,7 @@
         const hasMore = lastDensity.length > DENSITY_INITIAL;
         densityToggle.hidden = !hasMore;
         if (hasMore) {
-          densityToggle.textContent = densityExpanded ? 'Show less' : 'Show more';
+          densityToggle.textContent = densityExpanded ? 'See less' : 'See more';
           densityToggle.setAttribute('aria-expanded', String(densityExpanded));
         }
       }
@@ -258,7 +259,8 @@
           readingTimeValue.textContent = result.readingTime;
         }
 
-        // Limit warning feedback
+        // Limit warning feedback — update the limit number in the message
+        if (limitIsValid) charLimitValueSpan.textContent = characterLimit;
         setOverLimitState(overLimit);
 
         // Letter density — store then render
