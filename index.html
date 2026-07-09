@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Character Counter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <a class="header__logo" href="#" aria-label="Character Counter home">
+          <div class="brand-logo" aria-hidden="true">
+            <div class="brand-logo-left"></div>
+            <div class="brand-logo-right"></div>
+          </div>
+          <span>Character Counter</span>
+        </a>
+
+        <input
+          type="checkbox"
+          class="theme-switch visually-hidden"
+          id="theme-switch"
+        />
+        <label class="theme-toggle" for="theme-switch">
+          <span class="visually-hidden">Switch theme</span>
+          <img
+            class="theme-toggle__icon theme-toggle__icon--sun"
+            src="assets/images/icon-sun.svg"
+            alt=""
+            width="24"
+            height="24"
+          />
+          <img
+            class="theme-toggle__icon theme-toggle__icon--moon"
+            src="assets/images/icon-moon.svg"
+            alt=""
+            width="24"
+            height="24"
+          />
+        </label>
+      </header>
+
+      <main class="main">
+        <h1 class="hero-title">
+          Analyze your text<br class="hero-title__break" />
+          in real-time.
+        </h1>
+
+        <section class="analyzer" aria-labelledby="analyzer-label">
+          <h2 id="analyzer-label" class="visually-hidden">Text analyzer</h2>
+
+          <div class="textarea-wrapper">
+            <textarea
+              class="textarea"
+              rows="9"
+              placeholder="Start typing here..."
+              aria-describedby="reading-time"
+            >Design is the silent ambassador of your brand. Simplicity is key to effective communication, creating clarity in every interaction. A great design transforms complex ideas into elegant solutions, making them easy to understand. It blends aesthetics and functionality seamlessly.</textarea>
+          </div>
+
+          <div class="controls">
+            <div class="controls__options">
+              <label class="checkbox">
+                <input
+                  class="checkbox__input"
+                  type="checkbox"
+                  id="exclude-spaces"
+                />
+                <span class="checkbox__box" aria-hidden="true"></span>
+                <span class="checkbox__label">Exclude Spaces</span>
+              </label>
+
+              <label class="checkbox">
+                <input class="checkbox__input" type="checkbox" id="set-limit" />
+                <span class="checkbox__box" aria-hidden="true"></span>
+                <span class="checkbox__label">Set Character Limit</span>
+              </label>
+
+              <div class="limit-input-wrapper">
+                <label class="limit-input-label" for="character-limit">
+                  Character limit
+                </label>
+                <input
+                  class="limit-input"
+                  type="number"
+                  id="character-limit"
+                  min="1"
+                  value="300"
+                  aria-label="Character limit"
+                />
+              </div>
+            </div>
+
+            <p class="reading-time" id="reading-time">
+              Approx. reading time: <span>&lt;1 minute</span>
+            </p>
+          </div>
+
+          <div class="stats">
+            <div class="card stat-card stat-card--characters purple">
+              <div class="pattern"></div>
+              <p class="stat-card__value number">508</p>
+              <p class="stat-card__label label">Total Characters</p>
+            </div>
+
+            <div class="card stat-card stat-card--words orange">
+              <div class="pattern"></div>
+              <p class="stat-card__value number">86</p>
+              <p class="stat-card__label label">Word Count</p>
+            </div>
+
+            <div class="card stat-card stat-card--lines coral">
+              <div class="pattern"></div>
+              <p class="stat-card__value number">06</p>
+              <p class="stat-card__label label">Line Count</p>
+            </div>
+          </div>
+
+          <section class="letter-density" aria-labelledby="density-title">
+            <h2 class="letter-density__title" id="density-title">
+              Letter Density
+            </h2>
+
+            <ul class="letter-density__list">
+              <li class="density-item">
+                <span class="density-item__letter">E</span>
+                <div class="density-item__bar" role="presentation">
+                  <div class="density-item__fill density-item__fill--e"></div>
+                </div>
+                <span class="density-item__stats">59 (13.85%)</span>
+              </li>
+
+              <li class="density-item">
+                <span class="density-item__letter">I</span>
+                <div class="density-item__bar" role="presentation">
+                  <div class="density-item__fill density-item__fill--i"></div>
+                </div>
+                <span class="density-item__stats">41 (9.63%)</span>
+              </li>
+
+              <li class="density-item">
+                <span class="density-item__letter">T</span>
+                <div class="density-item__bar" role="presentation">
+                  <div class="density-item__fill density-item__fill--t"></div>
+                </div>
+                <span class="density-item__stats">38 (8.92%)</span>
+              </li>
+            </ul>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="assets/js/character-counter.js"></script>
+    <script>
+      const themeSwitch = document.getElementById('theme-switch');
+      const root = document.documentElement;
+      const textarea = document.querySelector('.textarea');
+      const excludeSpaces = document.getElementById('exclude-spaces');
+      const setLimit = document.getElementById('set-limit');
+      const characterLimitInput = document.getElementById('character-limit');
+      const totalCharactersValue = document.querySelector('.stat-card--characters .stat-card__value');
+      const wordCountValue = document.querySelector('.stat-card--words .stat-card__value');
+      const lineCountValue = document.querySelector('.stat-card--lines .stat-card__value');
+      const readingTimeValue = document.querySelector('.reading-time span');
+      const densityList = document.querySelector('.letter-density__list');
+
+      function updateTheme() {
+        if (themeSwitch.checked) {
+          root.classList.add('theme-light');
+        } else {
+          root.classList.remove('theme-light');
+        }
+      }
+
+      function renderAnalysis() {
+        const result = analyzeText(textarea.value, {
+          excludeSpaces: excludeSpaces.checked,
+        });
+
+        totalCharactersValue.textContent = String(result.totalCharacters).padStart(3, '0');
+        wordCountValue.textContent = String(result.wordCount).padStart(2, '0');
+        lineCountValue.textContent = String(result.lineCount).padStart(2, '0');
+        readingTimeValue.textContent = result.readingTime;
+
+        const limitEnabled = setLimit.checked;
+        const characterLimit = Number(characterLimitInput.value);
+        if (limitEnabled && Number.isFinite(characterLimit) && characterLimit > 0) {
+          const overLimit = result.totalCharacters > characterLimit;
+          readingTimeValue.textContent = overLimit
+            ? `${result.readingTime} • over limit`
+            : `${result.readingTime} • within limit`;
+        }
+
+        densityList.innerHTML = result.density
+          .map((item) => `
+            <li class="density-item">
+              <span class="density-item__letter">${item.letter}</span>
+              <div class="density-item__bar" role="presentation">
+                <div class="density-item__fill" style="width: ${Math.min(item.percentage, 100)}%"></div>
+              </div>
+              <span class="density-item__stats">${item.count} (${item.percentage}%)</span>
+            </li>
+          `)
+          .join('');
+      }
+
+      [themeSwitch, textarea, excludeSpaces, setLimit, characterLimitInput].forEach((element) => {
+        element.addEventListener('input', renderAnalysis);
+        element.addEventListener('change', renderAnalysis);
+      });
+
+      themeSwitch.addEventListener('change', updateTheme);
+      updateTheme();
+      renderAnalysis();
+    </script>
+  </body>
+</html>
