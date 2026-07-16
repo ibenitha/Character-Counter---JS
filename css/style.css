@@ -65,8 +65,8 @@
   --bg-page:            var(--color-neutral-900);
   --bg-surface:         var(--color-neutral-800);
   --bg-toggle:          var(--color-neutral-700);
-  --text-primary:       var(--color-neutral-0);
-  --text-secondary:     rgba(255, 255, 255, 0.6);
+  --text-primary:       var(--color-neutral-200);
+  --text-secondary:     rgba(228, 228, 239, 0.6);
   --text-on-card:       var(--color-neutral-900);
   --border-color:       var(--color-neutral-700);
   --focus-ring:         var(--color-purple-500);
@@ -74,7 +74,7 @@
   --textarea-bg:        var(--color-neutral-800);
   --checkbox-border:    rgba(255, 255, 255, 0.4);
   --density-track:      var(--color-neutral-700);
-  --reading-time-color: rgba(255, 255, 255, 0.6);
+  --reading-time-color: rgba(228, 228, 239, 0.6);
 }
 
 /* ── Light theme ── */
@@ -414,6 +414,11 @@ textarea {
   outline: none;
   border-color: var(--color-purple-500);
   box-shadow: 0 0 0 1px var(--color-purple-500);
+}
+
+.limit-input:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 /* =============================================

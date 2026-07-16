@@ -1,55 +1,30 @@
 /**
  * character-counter.js
  *
- * Core analysis engine for the Character Counter app.
+ * This file contains the text analysis logic.
+ * It calculates the results but does not directly change the HTML.
  *
- * This file contains the calculation logic only.
- * It does not directly update HTML.
- *
- * The UI file (index.html) calls analyzeText()
- * and receives the results to display.
- *
- * Features:
- * - Character counting
- * - Word counting
- * - Sentence counting
- * - Reading time estimation
- * - Letter frequency analysis
+ * The inline JavaScript in index.html calls analyzeText()
+ * and uses the returned results to update the UI.
  */
-
 
 'use strict';
 
 /*
-  Strict mode helps prevent common JavaScript mistakes.
-
-  Example:
-  Without strict mode:
-  x = 10;  // creates accidental global variable
-
-  With strict mode:
-  JavaScript throws an error.
+  Strict mode helps prevent common JavaScript mistakes,
+  such as accidentally creating global variables.
 */
 
 
 /* =================================================
-   CONSTANTS
+   CONSTANT
 ================================================= */
 
-
 /*
-  Average reading speed.
-
-  This value is used to calculate
-  estimated reading time.
-
-  Example:
-  400 words / 200 words per minute = 2 minutes
+  Average reading speed used to estimate
+  how long it takes to read the text.
 */
 const WORDS_PER_MINUTE = 200;
-
-
-
 
 
 /* =================================================
@@ -57,398 +32,190 @@ const WORDS_PER_MINUTE = 200;
 ================================================= */
 
 
-
-
-
 /*
-  Counts the number of words inside a text.
+  Count the number of words in the text.
 
-  Parameter:
-  text = the user input string
-
-  Returns:
-  number of words
+  Words are separated by whitespace,
+  such as spaces, tabs, or new lines.
 */
 function countWords(text) {
 
-
-  /*
-    trim() removes spaces at the beginning
-    and end of the text.
-
-    Example:
-    " hello " becomes "hello"
-  */
+  // Remove spaces from the beginning and end.
   const trimmed = text.trim();
 
-
-
-  /*
-    If after trimming there is no text,
-    return 0 because there are no words.
-  */
+  // If the text is empty, there are no words.
   if (!trimmed) return 0;
 
-
-
-
   /*
-    split(/\s+/)
-
-    Splits text whenever it finds
-    one or more spaces/new lines.
+    Split the text wherever there is one or more
+    whitespace characters.
 
     Example:
-    "Hello world"
+    "Hello   world"
 
     becomes:
-
     ["Hello", "world"]
-
-    length gives the number of words.
   */
   return trimmed.split(/\s+/).length;
-
 }
 
 
-
-
-
-
-
 /*
-  Counts sentences in the text.
+  Count sentences based on sentence-ending punctuation.
 
-  A sentence is considered complete when
-  it ends with:
+  A sentence is counted when the text contains:
   .
   !
   ?
-
 */
 function countSentences(text) {
 
-
-  // Remove unnecessary spaces
+  // Remove spaces from the beginning and end.
   const trimmed = text.trim();
 
-
-
-  // Empty text has no sentences
+  // Empty text contains no sentences.
   if (!trimmed) return 0;
 
-
-
-
   /*
-    Regular expression:
+    Find one or more sentence-ending punctuation marks.
 
-    [.!?]+
-
-    searches for sentence-ending symbols.
-
-    + means one or more occurrences.
-
-    Example:
-    "Hello. How are you?"
-
-    Matches:
-    .
-    ?
+    The "g" flag searches through the entire string.
   */
   const matches = trimmed.match(/[.!?]+/g);
 
-
-
   /*
-    If matches exist,
-    return number of sentences.
+    If punctuation was found, return the number
+    of matches.
 
-    Otherwise return 1 because
-    text without punctuation is treated
+    If no punctuation was found, treat the text
     as one sentence.
   */
   return matches ? matches.length : 1;
-
 }
 
 
-
-
-
-
-
-
 /*
-  Calculates estimated reading time.
-
-  Uses average reading speed:
-  200 words per minute.
-
-  Returns a readable string.
+  Convert a word count into a readable
+  estimated reading-time label.
 */
 function buildReadingTimeLabel(words) {
 
-
-  /*
-    If there are no words,
-    display less than one minute.
-  */
+  // No words means less than one minute.
   if (words === 0) return '<1 minute';
 
-
-
-
-  /*
-    Math.ceil rounds numbers upward.
-
-    Example:
-
-    201 words / 200 = 1.005
-
-    Math.ceil(1.005) = 2
-
-    because it will take slightly more
-    than one minute.
-  */
+  // Calculate the number of minutes and round up.
   const minutes = Math.ceil(
     words / WORDS_PER_MINUTE
   );
 
-
-
   /*
-    Template literal creates dynamic text.
-
-    Example:
-    minutes = 3
-
-    Result:
-    "3 minutes"
+    Use singular "minute" for 1
+    and plural "minutes" for other values.
   */
   return minutes < 1
     ? '<1 minute'
-    : `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`;
-
+    : `${minutes} ${
+        minutes === 1
+          ? 'minute'
+          : 'minutes'
+      }`;
 }
 
 
-
-
-
-
-
-
 /*
-  Calculates how frequently each letter appears.
+  Calculate how often each letter appears.
 
-  Only alphabet letters are counted.
-
-  Numbers, spaces and symbols are ignored.
-
-  Example:
-
-  Input:
-  "Apple"
-
-  Output:
-  A = 1
-  P = 2
-  L = 1
-  E = 1
+  Only English letters are counted.
+  Spaces, numbers, and punctuation are ignored.
 */
 function computeLetterDensity(text) {
 
-
-
-  // If text is empty return empty array
+  // No text means no density results.
   if (!text) return [];
 
-
-
-
   /*
-    Object stores letter frequency.
+    This object stores each letter and its count.
 
     Example:
-
     {
       A: 3,
       B: 1
     }
-
   */
   const freq = {};
 
-
-
-  // Stores total number of letters
+  // Stores the total number of letters.
   let total = 0;
 
 
-
-
   /*
-    for...of loops through every character.
-
-    Example:
-
-    "Cat"
-
-    First loop:
-    C
-
-    Second:
-    a
-
-    Third:
-    t
+    Loop through each character in the text.
   */
   for (const ch of text) {
 
-
-
-    /*
-      Regular expression checks if character
-      is an English letter.
-
-      a-z or A-Z only.
-    */
+    // Only count English alphabet letters.
     if (/[a-zA-Z]/.test(ch)) {
 
-
-
       /*
-        Convert letters to uppercase.
-
-        This makes:
-        a and A treated as the same letter.
+        Convert the character to uppercase
+        so "a" and "A" are counted together.
       */
       const upper = ch.toUpperCase();
 
-
-
-
       /*
-        Increase letter count.
+        Increase the count for this letter.
 
-        ?? means:
-        if value does not exist,
-        use 0.
-
-        Example:
-
-        freq[A] ?? 0
-
-        If A does not exist:
-        0 + 1
-
+        If the letter does not exist yet,
+        use 0 before adding 1.
       */
       freq[upper] =
         (freq[upper] ?? 0) + 1;
 
-
-
-      // Increase total letters count
+      // Increase the total number of letters.
       total++;
-
     }
-
   }
 
 
-
-
-  // If no letters exist, return empty result
+  // If there were no letters, return an empty array.
   if (total === 0) return [];
 
 
-
-
-
   /*
-    Object.entries converts object into array.
-
-    Example:
-
-    {
-      A:3,
-      B:2
-    }
-
-    becomes:
-
-    [
-      ["A",3],
-      ["B",2]
-    ]
-
+    Convert the frequency object into an array
+    so it can be transformed and sorted.
   */
   return Object.entries(freq)
 
-
-
     /*
-      Convert every letter into an object
-      that the HTML can easily display.
+      Convert each [letter, count] pair
+      into an object with display-ready data.
     */
     .map(([letter, count]) => ({
 
-
       letter,
-
 
       count,
 
-
-
-      /*
-        Calculate percentage.
-
-        Example:
-
-        Letter A appears 5 times
-        Total letters = 100
-
-        Percentage = 5%
-
-        toFixed(2)
-        keeps 2 decimal places.
-      */
+      // Calculate the percentage of the total letters.
       percentage:
         ((count / total) * 100).toFixed(2),
-
 
     }))
 
 
-
     /*
-      Sort letters by frequency.
+      Sort by highest frequency first.
 
-      Highest count appears first.
-
-      Example:
-
-      A:20
-      B:10
-      C:5
+      If two letters have the same count,
+      sort them alphabetically.
     */
     .sort(
       (a, b) =>
         b.count - a.count ||
         a.letter.localeCompare(b.letter)
     );
-
-
 }
-
-
-
-
-
-
 
 
 /* =================================================
@@ -457,46 +224,31 @@ function computeLetterDensity(text) {
 
 
 /*
-  Main function used by index.html.
+  Main function called by index.html.
 
-  It receives text and returns
-  all calculated information.
-
+  It combines all the helper functions
+  and returns the complete analysis result.
 */
 function analyzeText(text, options = {}) {
 
-
-
   /*
-    Destructuring.
+    Get the excludeSpaces option.
 
-    Gets excludeSpaces value from options.
-
-    If it does not exist,
-    default value is false.
+    If no value is provided,
+    excludeSpaces defaults to false.
   */
   const {
     excludeSpaces = false
   } = options;
 
 
-
-
-
   /*
-    Counts characters.
+    Count characters.
 
-    If excludeSpaces is true:
-    remove whitespace first.
+    If excludeSpaces is true,
+    remove whitespace before counting.
 
-    Example:
-
-    "hello world"
-
-    becomes:
-
-    "helloworld"
-
+    Otherwise, count the original text.
   */
   const totalCharacters =
     excludeSpaces
@@ -504,38 +256,31 @@ function analyzeText(text, options = {}) {
       : text.length;
 
 
-
-
-
-  // Calls helper functions
+  // Calculate the number of words.
   const wordCount =
     countWords(text);
 
 
-
+  // Calculate the number of sentences.
   const sentenceCount =
     countSentences(text);
 
 
-
+  // Calculate the estimated reading time.
   const readingTime =
     buildReadingTimeLabel(wordCount);
 
 
-
+  // Calculate the letter-frequency data.
   const density =
     computeLetterDensity(text);
 
 
-
-
-
   /*
-    Return object containing all results.
+    Return all calculated results in one object.
 
-    index.html receives this object
-    and updates the UI.
-
+    The inline JavaScript receives this object
+    and uses it to update the HTML.
   */
   return {
 
@@ -550,5 +295,4 @@ function analyzeText(text, options = {}) {
     density,
 
   };
-
 }

@@ -1,175 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <!-- Basic document setup and page title -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Character Counter</title>
 
-<head>
+    <!-- Load the DM Sans font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Defines the character encoding used by the page -->
-  <meta charset="UTF-8" />
+    <!-- Connect the HTML to the external CSS file -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
 
-  <!-- Makes the website responsive on different screen sizes -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <body>
+    <!-- Main application container -->
+    <div class="app">
 
-  <!-- Text displayed in the browser tab -->
-  <title>Character Counter</title>
+      <!-- Header with logo and theme switch -->
+      <header class="header">
+        <a class="header__logo" href="#" aria-label="Character Counter home">
+          <img
+            class="header__logo-img"
+            src="assets/images/Logo mark.png"
+            alt="Character Counter logo"
+            width="32"
+            height="40"
+          />
+          <span>Character Counter</span>
+        </a>
 
-
-  <!-- Improves loading speed by connecting early to Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-
-  <!-- Allows cross-origin loading of font resources -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-
-  <!-- Imports DM Sans font used throughout the application -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
-    rel="stylesheet"
-  />
-
-
-  <!-- Connects the HTML file with the external CSS file -->
-  <!-- CSS controls the design and layout -->
-  <link rel="stylesheet" href="css/style.css" />
-
-</head>
-
-
-<body>
-
-
-  <!-- Main container that wraps the whole application -->
-  <div class="app">
-
-
-    <!-- Header section containing logo and theme switch -->
-    <header class="header">
-
-
-      <!-- Logo link -->
-      <!-- href="#" means clicking it keeps user on the same page -->
-      <!-- aria-label improves accessibility for screen readers -->
-      <a class="header__logo" href="#" aria-label="Character Counter home">
-
-
-        <!-- Application logo image -->
-        <img
-          class="header__logo-img"
-          src="assets/images/Logo mark.png"
-          alt="Character Counter logo"
-          width="32"
-          height="40"
+        <!-- Hidden checkbox used as the theme switch -->
+        <input
+          type="checkbox"
+          class="theme-switch visually-hidden"
+          id="theme-switch"
         />
 
+        <!-- Label acts as the visible theme toggle -->
+        <label class="theme-toggle" for="theme-switch">
+          <span class="visually-hidden">Switch theme</span>
 
-        <!-- Text beside the logo -->
-        <span>Character Counter</span>
+          <!-- Icons for the two themes -->
+          <img
+            class="theme-toggle__icon theme-toggle__icon--sun"
+            src="assets/images/icon-sun.svg"
+            alt=""
+            width="24"
+            height="24"
+          />
+          <img
+            class="theme-toggle__icon theme-toggle__icon--moon"
+            src="assets/images/icon-moon.svg"
+            alt=""
+            width="24"
+            height="24"
+          />
+        </label>
+      </header>
 
-
-      </a>
-
-
-
-
-      <!-- Hidden checkbox that controls theme switching -->
-      <!-- JavaScript listens to its checked state -->
-      <input
-        type="checkbox"
-        class="theme-switch visually-hidden"
-        id="theme-switch"
-      />
-
-
-
-      <!-- Label acts as the visible button for the hidden checkbox -->
-      <!-- Clicking this label changes checkbox state -->
-      <label class="theme-toggle" for="theme-switch">
-
-
-        <!-- Hidden text for screen readers -->
-        <span class="visually-hidden">
-          Switch theme
-        </span>
-
-
-
-        <!-- Sun icon shown in dark mode -->
-        <img
-          class="theme-toggle__icon theme-toggle__icon--sun"
-          src="assets/images/icon-sun.svg"
-          alt=""
-          width="24"
-          height="24"
-        />
-
-
-
-        <!-- Moon icon shown in light mode -->
-        <img
-          class="theme-toggle__icon theme-toggle__icon--moon"
-          src="assets/images/icon-moon.svg"
-          alt=""
-          width="24"
-          height="24"
-        />
-
-
-      </label>
-
-
-    </header>
-          <!-- Main content area of the application -->
       <main>
 
-
-        <!-- Main heading of the page -->
-        <!-- <br> creates a line break to match the design -->
+        <!-- Main page heading -->
         <h1 class="hero-title">
-
           Analyze your text<br />
-
           in real-time.
-
         </h1>
 
-
-
-        <!--
-          Section containing all text analysis features.
-
-          aria-labelledby connects this section
-          with the hidden heading below for accessibility.
-        -->
+        <!-- Main text analysis section -->
         <section aria-labelledby="analyzer-label">
 
-
-          <!--
-            Hidden heading used by screen readers.
-            It describes what this section does.
-          -->
+          <!-- Hidden heading for accessibility -->
           <h2 id="analyzer-label" class="visually-hidden">
             Text analyzer
           </h2>
 
-
-
-
-          <!--
-            Wrapper around textarea.
-
-            CSS uses this wrapper to control:
-            - border
-            - background
-            - error state when limit is exceeded
-          -->
+          <!-- Text input area and character limit warning -->
           <div class="textarea-wrapper">
-
-
-            <!--
-              Main input area where users type text.
-
-              JavaScript reads textarea.value
-              to analyze the text.
-            -->
             <textarea
               class="textarea"
               rows="9"
@@ -177,152 +89,67 @@
               aria-describedby="reading-time char-limit-warning"
             >Design is the silent ambassador of your brand. Simplicity is key to effective communication, creating clarity in every interaction. A great design transforms complex ideas into elegant solutions, making them easy to understand. It blends aesthetics and functionality seamlessly.</textarea>
 
-
-
-            <!--
-              Warning message displayed when
-              character limit is exceeded.
-
-              hidden attribute means it is invisible initially.
-              JavaScript removes this when needed.
-            -->
-            <p 
-              class="char-limit-warning" 
-              id="char-limit-warning" 
-              role="alert" 
-              aria-live="polite" 
+            <!-- Warning shown when the character limit is exceeded -->
+            <p
+              class="char-limit-warning"
+              id="char-limit-warning"
+              role="alert"
+              aria-live="polite"
               hidden
             >
-
-              Limit reached! Your text exceeds 
-
-              <span id="char-limit-value">
-                300
-              </span>
-
+              Limit reached! Your text exceeds
+              <span id="char-limit-value">300</span>
               characters.
-
             </p>
-
-
           </div>
 
-
-
-
-
-          <!--
-            Controls section.
-
-            Contains:
-            - checkboxes
-            - character limit input
-            - reading time
-          -->
+          <!-- User controls and reading-time information -->
           <div class="controls">
 
-
-
-            <!-- Contains user options -->
+            <!-- Options for excluding spaces and setting a limit -->
             <div class="controls__options">
 
-
-
-
-
-              <!--
-                Checkbox for excluding spaces.
-
-                The real checkbox is hidden by CSS.
-                The custom span is styled as the checkbox.
-              -->
+              <!-- Checkbox for excluding spaces from the character count -->
               <label class="checkbox">
-
-
                 <input
                   class="checkbox__input"
                   type="checkbox"
                   id="exclude-spaces"
                 />
-
-
-                <!-- Custom checkbox design -->
-                <span 
-                  class="checkbox__box" 
+                <span
+                  class="checkbox__box"
                   aria-hidden="true"
                 ></span>
-
-
-                <!-- Label text shown to user -->
                 <span class="checkbox__label">
                   Exclude Spaces
                 </span>
-
-
               </label>
 
-
-
-
-
-
-              <!-- Checkbox that enables character limit -->
+              <!-- Checkbox for enabling the character limit -->
               <label class="checkbox">
-
-
-                <input 
-                  class="checkbox__input" 
-                  type="checkbox" 
-                  id="set-limit" 
+                <input
+                  class="checkbox__input"
+                  type="checkbox"
+                  id="set-limit"
                 />
-
-
-                <!-- Custom checkbox appearance -->
-                <span 
-                  class="checkbox__box" 
+                <span
+                  class="checkbox__box"
                   aria-hidden="true"
                 ></span>
-
-
                 <span class="checkbox__label">
                   Set Character Limit
                 </span>
-
-
               </label>
 
-
-
-
-
-
-              <!--
-                Character limit input.
-
-                CSS hides this by default.
-                It appears when "Set Character Limit"
-                checkbox is checked.
-              -->
+              <!-- Input for entering the character limit -->
               <div class="limit-input-wrapper">
-
-
-                <label 
-                  class="limit-input-label" 
+                <label
+                  class="limit-input-label"
                   for="character-limit"
                 >
-
                   Character limit
-
                 </label>
 
-
-
-                <!--
-                  Number input.
-
-                  JavaScript reads this value
-                  to compare against character count.
-                -->
                 <input
                   class="limit-input"
                   type="number"
@@ -331,168 +158,79 @@
                   value="300"
                   aria-label="Character limit"
                 />
-
-
               </div>
-
-
-
             </div>
 
-
-
-
-
-            <!--
-              Displays estimated reading time.
-
-              JavaScript updates the span content.
-            -->
-            <p 
-              class="reading-time" 
+            <!-- Reading time is updated by JavaScript -->
+            <p
+              class="reading-time"
               id="reading-time"
             >
-
               Approx. reading time:
-
-              <span>
-                &lt;1 minute
-              </span>
-
+              <span>&lt;1 minute</span>
             </p>
-
-
-
           </div>
 
-
-
-
-
-          <!--
-            Statistics cards section.
-
-            Displays:
-            - total characters
-            - word count
-            - sentence count
-          -->
+          <!-- Statistics cards -->
           <div class="stats">
 
-
-
-
-
-            <!-- Character count card -->
-            <div 
+            <!-- Total characters card -->
+            <div
               class="card stat-card stat-card--characters purple"
             >
-
-
-              <!-- Decorative SVG pattern from CSS -->
+              <!-- Decorative background pattern -->
               <div class="pattern"></div>
 
-
-              <!-- JavaScript updates this number -->
-              <p class="stat-card__value number">
-                00
-              </p>
-
+              <!-- JavaScript updates this value -->
+              <p class="stat-card__value number">00</p>
 
               <p class="stat-card__label label">
                 Total Characters
               </p>
-
-
             </div>
 
-
-
-
-
-
             <!-- Word count card -->
-            <div 
+            <div
               class="card stat-card stat-card--words orange"
             >
-
-
               <div class="pattern"></div>
 
-
-              <p class="stat-card__value number">
-                00
-              </p>
-
+              <!-- JavaScript updates this value -->
+              <p class="stat-card__value number">00</p>
 
               <p class="stat-card__label label">
                 Word Count
               </p>
-
-
             </div>
 
-
-
-
-
-
             <!-- Sentence count card -->
-            <div 
+            <div
               class="card stat-card stat-card--lines coral"
             >
-
-
               <div class="pattern"></div>
 
-
-              <p class="stat-card__value number">
-                00
-              </p>
-
+              <!-- JavaScript updates this value -->
+              <p class="stat-card__value number">00</p>
 
               <p class="stat-card__label label">
                 Sentence Count
               </p>
-
-
             </div>
-
-
-
           </div>
-                    <!--
-            Letter Density section.
 
-            Shows how frequently each letter
-            appears in the text.
-          -->
-          <section 
-            class="letter-density" 
+          <!-- Letter density section -->
+          <section
+            class="letter-density"
             aria-labelledby="density-title"
           >
-
-
-
-            <!-- Section title -->
-            <h2 
-              class="letter-density__title" 
+            <h2
+              class="letter-density__title"
               id="density-title"
             >
-
               Letter Density
-
             </h2>
 
-
-
-
-            <!--
-              Empty list initially.
-
-              JavaScript creates the <li> elements
-              dynamically after analyzing text.
-            -->
+            <!-- JavaScript dynamically adds letter-density items here -->
             <ul
               class="letter-density__list"
               id="density-list"
@@ -500,621 +238,264 @@
               aria-label="Letter frequency breakdown"
             ></ul>
 
-
-
-
-
-            <!--
-              Button for expanding/collapsing density list.
-
-              hidden means it is invisible initially.
-
-              JavaScript displays it only when
-              there are more than 5 letters.
-            -->
+            <!-- Button for showing more or fewer density results -->
             <button
               class="density-toggle"
               id="density-toggle"
               aria-expanded="false"
               hidden
             >
-
               See more
-
             </button>
-
-
-
           </section>
 
-
         </section>
-
-
       </main>
-
-
     </div>
 
-
-
-
-
-    <!--
-      Loads the external JavaScript file.
-
-      This file contains the calculation logic:
-      - character count
-      - word count
-      - sentence count
-      - reading time
-      - letter density
-    -->
+    <!-- Load the analysis functions first -->
     <script src="assets/js/character-counter.js"></script>
 
-
-
-
-
-    <!--
-      Inline JavaScript.
-
-      This part controls:
-      - DOM manipulation
-      - updating the UI
-      - event listeners
-      - theme switching
-    -->
+    <!-- Inline JavaScript connects the analysis logic to the UI -->
     <script>
-            /*
-        DOM REFERENCES
 
-        We select HTML elements and store them
-        in variables so JavaScript can interact
-        with them later.
-
-        Instead of searching the page repeatedly,
-        we keep references.
-      */
-
-
-      // Gets theme checkbox from HTML
-      const themeSwitch =
-        document.getElementById('theme-switch');
-
-
-      // Gets the <html> element.
-      // Used to add/remove theme classes.
-      const root =
-        document.documentElement;
-
-
-      // Main textarea where user types text
-      const textarea =
-        document.querySelector('.textarea');
-
-
-      // Wrapper around textarea.
-      // Used for changing border when limit is exceeded.
-      const textareaWrapper =
-        document.querySelector('.textarea-wrapper');
-
-
-      // Checkbox for excluding spaces
-      const excludeSpaces =
-        document.getElementById('exclude-spaces');
-
-
-      // Checkbox for enabling character limit
-      const setLimit =
-        document.getElementById('set-limit');
-
-
-      // Input containing maximum characters allowed
+      // Select the HTML elements needed by JavaScript
+      const themeSwitch = document.getElementById('theme-switch');
+      const root = document.documentElement;
+      const textarea = document.querySelector('.textarea');
+      const textareaWrapper = document.querySelector('.textarea-wrapper');
+      const excludeSpaces = document.getElementById('exclude-spaces');
+      const setLimit = document.getElementById('set-limit');
       const characterLimitInput =
         document.getElementById('character-limit');
 
-
-
-      // Character count displayed in first card
       const totalCharactersValue =
         document.querySelector(
           '.stat-card--characters .stat-card__value'
         );
 
-
-
-      // Word count displayed in second card
       const wordCountValue =
         document.querySelector(
           '.stat-card--words .stat-card__value'
         );
 
-
-
-      // Sentence count displayed in third card
       const sentenceCountValue =
         document.querySelector(
           '.stat-card--lines .stat-card__value'
         );
 
-
-
-      // Reading time text
       const readingTimeValue =
-        document.querySelector(
-          '.reading-time span'
-        );
+        document.querySelector('.reading-time span');
 
-
-
-      // Letter density list container
       const densityList =
         document.getElementById('density-list');
 
-
-      // See more / See less button
       const densityToggle =
         document.getElementById('density-toggle');
 
-
-      // Warning message when limit exceeded
       const charLimitWarning =
         document.getElementById('char-limit-warning');
 
-
-      // Number displayed inside warning text
       const charLimitValueSpan =
         document.getElementById('char-limit-value');
 
-
-      // Character card that changes color
-      // when limit is exceeded
       const charCard =
-        document.querySelector(
-          '.stat-card--characters'
-        );
+        document.querySelector('.stat-card--characters');
 
-
-      // Logo changes depending on theme
       const logoImage =
-        document.querySelector(
-          '.header__logo-img'
-        );
-        
-      // ==============================
-      // THEME SWITCHING FUNCTION
-      // ==============================
+        document.querySelector('.header__logo-img');
 
 
-      /*
-        Changes between dark and light theme.
-
-        The checkbox state decides which theme
-        class is added to the page.
-      */
+      // Update the theme by adding or removing the theme-light class
       function updateTheme() {
-
-
-        // If checkbox is checked
         if (themeSwitch.checked) {
-
-
-          /*
-            Adds theme-light class to <html>.
-
-            CSS has .theme-light selectors
-            that replace dark colors with light colors.
-          */
           root.classList.add('theme-light');
-
-
-
-          // Change logo for light background
-          logoImage.src =
-            'assets/images/Logo.png';
-
-
-
+          logoImage.src = 'assets/images/Logo.png';
         } else {
-
-
-
-          // Remove light theme class
-          // and return to default dark theme
           root.classList.remove('theme-light');
-
-
-
-          // Restore dark theme logo
-          logoImage.src =
-            'assets/images/Logo mark.png';
-
-
+          logoImage.src = 'assets/images/Logo mark.png';
         }
-
       }
 
 
-
-
-
-      // ==============================
-      // CHARACTER LIMIT VISUAL STATE
-      // ==============================
-
-
-      /*
-        Handles the UI changes when the user
-        exceeds the character limit.
-
-        Parameter:
-        overLimit = true/false
-      */
+      // Apply or remove visual styles when the character limit is exceeded
       function setOverLimitState(overLimit) {
-
-
-
-        /*
-          toggle() adds a class when true
-          and removes it when false.
-        */
-
-
-        // Changes textarea appearance
         textarea.classList.toggle(
           'textarea--over-limit',
           overLimit
         );
 
-
-
-        // Changes textarea wrapper appearance
         textareaWrapper.classList.toggle(
           'textarea-wrapper--over-limit',
           overLimit
         );
 
-
-
-        // Changes character card color
         charCard.classList.toggle(
           'stat-card--over-limit',
           overLimit
         );
 
-
-
-        // Shows warning message only if exceeded
-        charLimitWarning.hidden =
-          !overLimit;
-
+        charLimitWarning.hidden = !overLimit;
       }
 
 
-
-
-
-      // ==============================
-      // LETTER DENSITY DISPLAY
-      // ==============================
-
-
-      // Number of density items shown initially
+      // Control how many letter-density results are initially displayed
       const DENSITY_INITIAL = 5;
 
-
-
-      // Tracks whether user clicked See more
+      // Track whether the density list is expanded
       let densityExpanded = false;
 
-
-
-      // Stores latest density calculation
+      // Store the latest density results
       let lastDensity = [];
 
 
-
-
-
-      /*
-        Creates the letter density HTML.
-
-        The calculation happens in
-        character-counter.js.
-
-        This function only displays results.
-      */
+      // Render the letter-density data in the HTML
       function renderDensityList() {
 
-
-
-        // If there are no letters
+        // Show an empty message when there are no letters
         if (lastDensity.length === 0) {
-
-
           densityList.innerHTML =
-            '<li class="density-empty">No characters found. Start typing above.</li>';
-
+            '<li class="density-empty">' +
+            'No characters found. Start typing above.' +
+            '</li>';
 
           densityToggle.hidden = true;
-
-
           return;
-
         }
 
+        // Show all results or only the first five
+        const visible = densityExpanded
+          ? lastDensity
+          : lastDensity.slice(0, DENSITY_INITIAL);
 
+        // Convert the data into HTML elements
+        densityList.innerHTML = visible
+          .map((item) => `
+            <li class="density-item">
+              <span class="density-item__letter">
+                ${item.letter}
+              </span>
 
+              <div
+                class="density-item__bar"
+                role="presentation"
+              >
+                <div
+                  class="density-item__fill"
+                  style="width: ${Math.min(
+                    item.percentage,
+                    100
+                  )}%"
+                ></div>
+              </div>
 
+              <span class="density-item__stats">
+                ${item.count} (${item.percentage}%)
+              </span>
+            </li>
+          `)
+          .join('');
 
-        /*
-          If expanded:
-          show all letters.
-
-          Otherwise:
-          show first 5.
-        */
-        const visible =
-          densityExpanded
-            ? lastDensity
-            : lastDensity.slice(
-                0,
-                DENSITY_INITIAL
-              );
-
-
-
-
-
-        /*
-          map() loops through the density array
-          and creates HTML for every letter.
-        */
-        densityList.innerHTML =
-          visible
-
-            .map(
-              (item) => `
-
-              <li class="density-item">
-
-                <span class="density-item__letter">
-                  ${item.letter}
-                </span>
-
-                <div 
-                  class="density-item__bar"
-                  role="presentation"
-                >
-
-                  <div
-                    class="density-item__fill"
-                    style="width: ${Math.min(item.percentage,100)}%"
-                  ></div>
-
-                </div>
-
-
-                <span class="density-item__stats">
-                  ${item.count} (${item.percentage}%)
-                </span>
-
-
-              </li>
-
-              `
-            )
-
-            // Removes commas between generated HTML
-            .join('');
-
-
-
-
-
-
-        // Check if there are more than 5 letters
+        // Show the toggle only when more than five items exist
         const hasMore =
           lastDensity.length > DENSITY_INITIAL;
 
-
-
-        // Show or hide button
-        densityToggle.hidden =
-          !hasMore;
-
-
+        densityToggle.hidden = !hasMore;
 
         if (hasMore) {
-
-
-          // Change button text
           densityToggle.textContent =
             densityExpanded
               ? 'See less'
               : 'See more';
 
-
-
-          // Accessibility information
           densityToggle.setAttribute(
             'aria-expanded',
             String(densityExpanded)
           );
-
         }
-
       }
 
 
-
-
-
-      /*
-        Button click changes between
-        expanded and collapsed states.
-      */
+      // Toggle between showing more and fewer density results
       densityToggle.addEventListener(
         'click',
         () => {
-
-
-          // Reverse current value
-          densityExpanded =
-            !densityExpanded;
-
-
-
-          // Redraw list
+          densityExpanded = !densityExpanded;
           renderDensityList();
-
         }
       );
 
 
-
-
-
-      // ==============================
-      // MAIN APPLICATION FUNCTION
-      // ==============================
-
-
-      /*
-        Runs every time text changes.
-
-        It:
-        1. Gets current text
-        2. Calls analyzeText()
-        3. Updates the page
-      */
+      // Main function that analyzes the text and updates the UI
       function renderAnalysis() {
 
+        // Get the analysis results from the external JavaScript file
+        const result = analyzeText(
+          textarea.value,
+          {
+            excludeSpaces: excludeSpaces.checked,
+          }
+        );
 
 
-        // Get calculated results
-        const result =
-          analyzeText(
-            textarea.value,
-            {
-              excludeSpaces:
-                excludeSpaces.checked,
-            }
-          );
-
-
-
-        // Update character card
+        // Update the statistics cards
         totalCharactersValue.textContent =
-          String(result.totalCharacters)
-            .padStart(2,'0');
+          String(result.totalCharacters).padStart(2, '0');
 
-
-
-        // Update word card
         wordCountValue.textContent =
-          String(result.wordCount)
-            .padStart(2,'0');
+          String(result.wordCount).padStart(2, '0');
 
-
-
-        // Update sentence card
         sentenceCountValue.textContent =
-          String(result.sentenceCount)
-            .padStart(2,'0');
+          String(result.sentenceCount).padStart(2, '0');
 
 
-
-
-
-        // Check character limit
+        // Check and validate the character limit
         const limitEnabled =
           setLimit.checked;
 
-
-
         const characterLimit =
           Number(characterLimitInput.value);
-
-
 
         const limitIsValid =
           limitEnabled &&
           Number.isFinite(characterLimit) &&
           characterLimit > 0;
 
-
-
         const overLimit =
           limitIsValid &&
           result.totalCharacters > characterLimit;
 
 
-
-
+        // Update the reading time and limit status
         if (limitIsValid) {
-
-
-          const badge =
-            overLimit
-              ? '⚠ over limit'
-              : '✓ within limit';
-
-
+          const badge = overLimit
+            ? '⚠ over limit'
+            : '✓ within limit';
 
           readingTimeValue.textContent =
             `${result.readingTime} · ${badge}`;
-
-
         } else {
-
-
           readingTimeValue.textContent =
             result.readingTime;
-
         }
 
 
-
-
+        // Update the warning and visual over-limit state
         if (limitIsValid) {
-
           charLimitValueSpan.textContent =
             characterLimit;
-
         }
-
-
 
         setOverLimitState(overLimit);
 
 
-
-        // Update letter density
-        lastDensity =
-          result.density;
-
-
+        // Save and display the latest letter-density results
+        lastDensity = result.density;
         renderDensityList();
-
       }
 
 
-
-
-
-      // ==============================
-      // EVENT LISTENERS
-      // ==============================
-
-
-      /*
-        These elements can change analysis results.
-
-        forEach avoids writing the same listener
-        multiple times.
-      */
+      // Re-run the analysis whenever the user changes the inputs
       [
         textarea,
         excludeSpaces,
@@ -1122,57 +503,29 @@
         characterLimitInput
       ].forEach((el) => {
 
-
-
-        // Runs while typing
         el.addEventListener(
           'input',
           renderAnalysis
         );
 
-
-
-        // Runs when checkbox/input changes
         el.addEventListener(
           'change',
           renderAnalysis
         );
-
-
       });
 
 
-
-
-
-      // Theme changes when checkbox changes
+      // Update the theme whenever the theme checkbox changes
       themeSwitch.addEventListener(
         'change',
         updateTheme
       );
 
 
-
-
-
-      // ==============================
-      // INITIAL EXECUTION
-      // ==============================
-
-
-      /*
-        Runs once when page loads.
-
-        Sets initial theme
-        and calculates default text.
-      */
+      // Run the initial setup when the page loads
       updateTheme();
-
       renderAnalysis();
 
     </script>
-
-
   </body>
-
 </html>
