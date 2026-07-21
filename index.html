@@ -50,7 +50,7 @@
           <img
             class="theme-toggle__icon theme-toggle__icon--sun"
             src="assets/images/icon-sun.svg"
-            alt=""
+            alt="theme toggle icon"
             width="24"
             height="24"
           />
@@ -260,14 +260,14 @@
     <script>
 
       // Select the HTML elements needed by JavaScript
-      const themeSwitch = document.getElementById('theme-switch');
+      const themeSwitch = document.querySelector('#theme-switch');
       const root = document.documentElement;
       const textarea = document.querySelector('.textarea');
       const textareaWrapper = document.querySelector('.textarea-wrapper');
-      const excludeSpaces = document.getElementById('exclude-spaces');
-      const setLimit = document.getElementById('set-limit');
+      const excludeSpaces = document.querySelector('#exclude-spaces');
+      const setLimit = document.querySelector('#set-limit');
       const characterLimitInput =
-        document.getElementById('character-limit');
+        document.querySelector('#character-limit');
 
       const totalCharactersValue =
         document.querySelector(
@@ -288,7 +288,7 @@
         document.querySelector('.reading-time span');
 
       const densityList =
-        document.getElementById('density-list');
+        document.querySelector('#density-list');
 
       const densityToggle =
         document.getElementById('density-toggle');
@@ -408,10 +408,10 @@
               ? 'See less'
               : 'See more';
 
-          densityToggle.setAttribute(
-            'aria-expanded',
-            String(densityExpanded)
-          );
+          // densityToggle.setAttribute(
+          //   'aria-expanded',
+          //   String(densityExpanded)
+          // );
         }
       }
 
